@@ -7,8 +7,8 @@
 <p>
   <img src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white" />
   <img src="https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white" />
-  <img src="https://img.shields.io/badge/Status-MVP%20Complete-22C55E?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Phase-3%20In%20Progress-FF6B9D?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white" />
+  <img src="https://img.shields.io/badge/Status-Phase%203%20In%20Progress-FF6B9D?style=for-the-badge" />
 </p>
 
 <p>
@@ -30,15 +30,18 @@
 
 <br/>
 
-## 🎯 MVP Features
+## 🎯 Core Features
 
 | 기능 | 설명 |
 | :--- | :--- |
-| 📝 **기록 CRUD** | 제목, 장소, 좌표, 메모, 태그, 비용, 감정 점수 저장 / 수정 / 삭제 |
+| 🔐 **인증** | 카카오 소셜 로그인 + Supabase Auth |
+| 💑 **커플 연동** | 커플 코드 생성 및 파트너 연결 |
+| 📝 **기록 CRUD** | 제목, 장소, 좌표, 메모, 태그, 비용, 감정 점수, 사진 저장/수정/삭제 |
 | 📅 **캘린더 탐색** | 기록 날짜 인디케이터 + 선택 날짜 리스트 |
-| 🗺️ **지도 탐색** | 마커 표시 + 바텀시트 미리보기 + 상세 이동 |
+| 🗺️ **지도 탐색** | 마커 클러스터링 + 바텀시트 미리보기 + 상세 이동 |
 | 🔍 **필터링** | 태그 / 감정 기준으로 기록 필터 |
 | 📊 **통계** | 총 횟수, 총 비용, 평균 감정, 월별 횟수 분석 |
+| 👤 **마이페이지** | 프로필 관리 및 설정 |
 
 <br/>
 
@@ -50,12 +53,20 @@
   <img src="https://img.shields.io/badge/Dart-0175C2?style=flat-square&logo=dart&logoColor=white" />
 </p>
 
+#### Backend & Auth
+<p>
+  <img src="https://img.shields.io/badge/Supabase-3ECF8E?style=flat-square&logo=supabase&logoColor=white" />
+  <img src="https://img.shields.io/badge/Kakao_SDK-FFCD00?style=flat-square&logo=kakao&logoColor=black" />
+</p>
+
 #### Core Packages
 <p>
   <img src="https://img.shields.io/badge/flutter__riverpod-State%20Mgmt-02569B?style=flat-square&logo=flutter&logoColor=white" />
+  <img src="https://img.shields.io/badge/hive-Local%20DB-FF6B9D?style=flat-square" />
   <img src="https://img.shields.io/badge/table__calendar-Calendar%20UI-FF6B9D?style=flat-square" />
   <img src="https://img.shields.io/badge/flutter__map-Map%20UI-7CB342?style=flat-square" />
-  <img src="https://img.shields.io/badge/latlong2-Geo-6C5CE7?style=flat-square" />
+  <img src="https://img.shields.io/badge/image__picker-사진-FF9800?style=flat-square" />
+  <img src="https://img.shields.io/badge/geolocator-위치-009688?style=flat-square" />
   <img src="https://img.shields.io/badge/intl-Format-009688?style=flat-square" />
   <img src="https://img.shields.io/badge/uuid-ID-FF9800?style=flat-square" />
 </p>
@@ -64,10 +75,6 @@
 <p>
   <img src="https://img.shields.io/badge/iOS-000000?style=flat-square&logo=apple&logoColor=white" />
   <img src="https://img.shields.io/badge/Android-3DDC84?style=flat-square&logo=android&logoColor=white" />
-  <img src="https://img.shields.io/badge/Web-4285F4?style=flat-square&logo=googlechrome&logoColor=white" />
-  <img src="https://img.shields.io/badge/macOS-000000?style=flat-square&logo=apple&logoColor=white" />
-  <img src="https://img.shields.io/badge/Windows-0078D6?style=flat-square&logo=windows&logoColor=white" />
-  <img src="https://img.shields.io/badge/Linux-FCC624?style=flat-square&logo=linux&logoColor=black" />
 </p>
 
 > 지도 타일은 **OpenStreetMap**을 사용합니다.
@@ -82,11 +89,14 @@ lib/src/
 ├── 💾 data/           # 리포지토리 (CRUD)
 ├── 🔄 state/          # 전역 상태 + 필터 상태 (Riverpod)
 └── 🎨 features/       # 화면 단위 기능
+    ├── auth/         # 로그인 / 인증
+    ├── couple/       # 커플 연동
     ├── calendar/     # 캘린더 탭
     ├── map/          # 지도 탭
     ├── add/          # 기록 추가
     ├── detail/       # 기록 상세
-    └── stats/        # 통계
+    ├── stats/        # 통계
+    └── mypage/       # 마이페이지
 ```
 
 <br/>
@@ -102,7 +112,7 @@ cd Daytory
 #### 2. 환경 변수 설정
 ```bash
 cp .env.example .env
-# .env 파일을 편집하여 필요한 값 입력
+# .env 파일을 편집하여 Supabase URL, Kakao API 키 등 입력
 ```
 
 #### 3. 의존성 설치
@@ -126,19 +136,24 @@ flutter run
 - [x] 지도 탭 구현
 - [x] 필터 / 통계 화면 구현
 
-#### Phase 2 — 자동화 `진행 중`
+#### Phase 2 — 인프라 & 소셜 `완료`
 - [x] PR 자동 생성 워크플로우
+- [x] Supabase 백엔드 연동
+- [x] 카카오 소셜 로그인
+- [x] 커플 연동 (코드 기반 파트너 연결)
+- [x] Hive 로컬 DB 연동
+- [x] 사진 선택 (`image_picker`) 및 저장
+- [x] 지도 마커 클러스터링
 
-#### Phase 3 — 확장 `계획`
+#### Phase 3 — 확장 `진행 중`
 - [ ] 지도에서 카테고리별 마커 표시 (DB 스키마 수정 필요)
 - [ ] DB 설계 고도화
 - [ ] 솔로 / 커플 / 가족 단위로 사용 모드 확장
 
 #### Future — 추가 확장 아이디어
-- [ ] 실제 로컬 DB (Drift / Hive) 연동
-- [ ] 사진 선택 (`image_picker`) 및 저장
-- [ ] 지도 클러스터링 / 검색 강화
 - [ ] 동선 기록 (복수 장소) 모델 확장
+- [ ] 지도 검색 강화
+- [ ] 푸시 알림 (기념일, 리마인더)
 
 <br/>
 
@@ -158,9 +173,9 @@ flutter run
 
 ## 📄 License
 
-<div>개발자: 정재민</div> 
-<div>cotract🏹: wjdwoals000619@gmail.com 
-</div>
+<div>개발자: 정재민</div>
+<div>contact 🏹: wjdwoals000619@gmail.com</div>
+
 <br/>
 
 <div align="center">
